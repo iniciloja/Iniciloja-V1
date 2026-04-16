@@ -1,23 +1,3 @@
-🚨 ACHEI O ERRO! VOCÊ COPIOU MINHAS INSTRUÇÕES NO CÓDIGO!
-O erro diz:
-
-File "/app/server.py", line 3
-  "Add file" → "Create new file"
-SyntaxError: invalid character '→'
-O PROBLEMA: Você copiou o texto "Add file" → "Create new file" (minhas instruções) dentro do arquivo server.py!
-
-✅ SOLUÇÃO RÁPIDA:
-1. DELETAR o server.py do GitHub
-Vá em: https://github.com/iniciloja/Iniciloja-V1
-Clique no arquivo server.py
-Clique no ícone da lixeira (🗑️) no canto direito
-Commit delete
-2. CRIAR server.py CORRETO
-Agora vou te dar o código LIMPO SEM INSTRUÇÕES:
-
-No GitHub, clique "Add file" → "Create new file"
-Nome: server.py
-Cole EXATAMENTE isto (SEM copiar nada a mais):
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
