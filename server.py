@@ -1,8 +1,23 @@
+🚨 ACHEI O ERRO! VOCÊ COPIOU MINHAS INSTRUÇÕES NO CÓDIGO!
+O erro diz:
 
-ARQUIVO 9: server.py (O MAIS IMPORTANTE!)
-"Add file" → "Create new file"
+File "/app/server.py", line 3
+  "Add file" → "Create new file"
+SyntaxError: invalid character '→'
+O PROBLEMA: Você copiou o texto "Add file" → "Create new file" (minhas instruções) dentro do arquivo server.py!
+
+✅ SOLUÇÃO RÁPIDA:
+1. DELETAR o server.py do GitHub
+Vá em: https://github.com/iniciloja/Iniciloja-V1
+Clique no arquivo server.py
+Clique no ícone da lixeira (🗑️) no canto direito
+Commit delete
+2. CRIAR server.py CORRETO
+Agora vou te dar o código LIMPO SEM INSTRUÇÕES:
+
+No GitHub, clique "Add file" → "Create new file"
 Nome: server.py
-Cole TODO o código abaixo (é grande mas é o principal!):
+Cole EXATAMENTE isto (SEM copiar nada a mais):
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -37,7 +52,6 @@ from commission_routes import init_commission_routes, get_seller_level, calculat
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
@@ -45,7 +59,6 @@ db = client[os.environ['DB_NAME']]
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
-# Initialize module routes
 admin_router = init_admin_routes(db)
 subscription_router = init_subscription_routes(db)
 chatbot_router = init_chatbot_routes(db)
@@ -57,10 +70,8 @@ app.include_router(chatbot_router)
 app.include_router(ads_router)
 app.include_router(commission_router)
 
-# Anti-fraud middleware
 app.add_middleware(AntiFraudMiddleware)
 
-# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -72,7 +83,6 @@ app.add_middleware(
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ==================== AUTH ROUTES ====================
 @api_router.post("/auth/register", response_model=dict)
 async def register(user_data: UserCreate):
     existing = await db.users.find_one({"email": user_data.email})
@@ -94,11 +104,7 @@ async def register(user_data: UserCreate):
     
     user_dict.pop("password")
     user_dict.pop("_id", None)
-    return {
-        "user": user_dict,
-        "access_token": access_token,
-        "token_type": "bearer"
-    }
+    return {"user": user_dict, "access_token": access_token, "token_type": "bearer"}
 
 @api_router.post("/auth/login", response_model=dict)
 async def login(login_data: LoginRequest):
@@ -122,11 +128,7 @@ async def login(login_data: LoginRequest):
     user["shop"] = shop
     user["role"] = user.get("role", "seller")
     
-    return {
-        "user": user,
-        "access_token": access_token,
-        "token_type": "bearer"
-    }
+    return {"user": user, "access_token": access_token, "token_type": "bearer"}
 
 @api_router.get("/auth/me")
 async def get_me(email: str = Depends(get_current_user)):
@@ -145,7 +147,6 @@ async def get_me(email: str = Depends(get_current_user)):
     user["shop"] = shop
     return {"user": user}
 
-# ==================== SHOP ROUTES ====================
 @api_router.post("/shops", response_model=Shop)
 async def create_shop(shop_data: ShopCreate, email: str = Depends(get_current_user)):
     user = await db.users.find_one({"email": email})
@@ -189,7 +190,6 @@ async def update_shop_settings(shop_id: str, settings: ShopSettings, email: str 
     await db.shops.update_one({"id": shop_id}, {"$set": {"settings": settings.dict()}})
     return {"message": "Settings updated successfully"}
 
-# ==================== PRODUCT ROUTES ====================
 @api_router.post("/products", response_model=Product)
 async def create_product(product_data: ProductCreate, email: str = Depends(get_current_user)):
     user = await db.users.find_one({"email": email})
@@ -274,7 +274,6 @@ async def delete_product(product_id: str, email: str = Depends(get_current_user)
     await db.products.delete_one({"id": product_id})
     return {"message": "Product deleted"}
 
-# ==================== ORDER ROUTES ====================
 @api_router.post("/orders", response_model=Order)
 async def create_order(order_data: OrderCreate):
     warnings = validate_order_data({
@@ -323,7 +322,6 @@ async def root():
 
 app.include_router(api_router)
 
-# ==================== STARTUP & SERVER ====================
 @app.on_event("startup")
 async def startup_event():
     await seed_admin()
