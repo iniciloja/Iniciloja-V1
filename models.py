@@ -1,14 +1,26 @@
+Vou te dar TODOS os arquivos corretos agora. Você vai DELETAR os antigos e CRIAR NOVOS.
+
+📝 PASSO 1: DELETAR TODOS OS .py DO GITHUB
+Vá em: https://github.com/iniciloja/Iniciloja-V1
+Delete CADA arquivo .py (clique no arquivo → ícone lixeira 🗑️)
+Delete: auth.py, models.py, server.py, etc.
+MANTENHA: requirements.txt, Procfile, railway.json, etc.
+📄 PASSO 2: CRIAR ARQUIVOS NOVOS - SEM ERROS!
+Vou postar os arquivos SEM MINHAS INSTRUÇÕES. Copie APENAS entre as linhas de código!
+
+1. Criar models.py
+No GitHub: "Add file" → "Create new file" → Nome: models.py
+
+Copie APENAS o código abaixo (entre python e ):
+
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import datetime
 
-
-# ==================== USER MODELS ====================
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-
 
 class User(BaseModel):
     id: str
@@ -18,17 +30,13 @@ class User(BaseModel):
     shop_id: Optional[str] = None
     created_at: datetime
 
-
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
 
-
-# ==================== SHOP MODELS ====================
 class ShopCreate(BaseModel):
     name: str
     description: Optional[str] = None
-
 
 class Shop(BaseModel):
     id: str
@@ -40,7 +48,6 @@ class Shop(BaseModel):
     created_at: datetime
     days_active: int = 0
 
-
 class ShopSettings(BaseModel):
     pickup_enabled: Optional[bool] = False
     pickup_address: Optional[str] = None
@@ -49,8 +56,6 @@ class ShopSettings(BaseModel):
     pickup_zip: Optional[str] = None
     pix_key: Optional[str] = None
 
-
-# ==================== PRODUCT MODELS ====================
 class ProductCreate(BaseModel):
     name: str
     description: Optional[str] = None
@@ -61,7 +66,6 @@ class ProductCreate(BaseModel):
     product_type: Optional[str] = "physical"
     delivery_type: Optional[str] = "shipping"
     delivery_time: Optional[str] = None
-
 
 class Product(BaseModel):
     id: str
@@ -78,14 +82,11 @@ class Product(BaseModel):
     is_used: bool = False
     created_at: datetime
 
-
-# ==================== ORDER MODELS ====================
 class OrderItem(BaseModel):
     product_id: str
     product_name: str
     quantity: int
     price: float
-
 
 class OrderCreate(BaseModel):
     shop_id: str
@@ -96,7 +97,6 @@ class OrderCreate(BaseModel):
     shipping_address: str
     items: List[OrderItem]
     total_amount: float
-
 
 class Order(BaseModel):
     id: str
@@ -112,12 +112,13 @@ class Order(BaseModel):
     fraud_score: int = 0
     created_at: datetime
 
-
-# ==================== AUTH MODELS ====================
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+class AIRequest(BaseModel):
+    prompt: str
+    context: Optional[str] = None
 
 # ==================== AI MODELS ====================
 class AIRequest(BaseModel):
